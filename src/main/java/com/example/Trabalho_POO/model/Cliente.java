@@ -15,10 +15,5 @@ public class Cliente {
 	private Long id;
 	
 	@Column(nullable = false)
-	private String nome;
-	
-	private boolean completed;
-
-	//private boolean visible;	
-	
+	private String nome;	
 }
