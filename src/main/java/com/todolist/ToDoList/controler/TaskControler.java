@@ -32,8 +32,14 @@ public class TaskControler {
 	
 	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)
-    public Task createTask(@RequestBody Task task) {
-        return taskRepository.save(task);
+    public ResponseEntity<Task> createTask(@RequestBody Task task) {
+		try {
+			Task updated = taskRepository.save(task);
+			return ResponseEntity.ok(updated);
+		}
+		catch(Exception e) {
+			return ResponseEntity.badRequest().build();
+		}	
     }
 	
 	@PutMapping("/{id}")
@@ -42,8 +48,13 @@ public class TaskControler {
         if (existingTask != null && existingTask.isDeleted() == false) {
             existingTask.setDescription(updatedTask.getDescription());
             existingTask.setCompleted(updatedTask.isCompleted());
-            Task updated = taskRepository.save(existingTask);
-            return ResponseEntity.ok(updated);
+            try {
+    			Task updated = taskRepository.save(existingTask);
+    			return ResponseEntity.ok(updated);
+    		}
+    		catch(Exception e) {
+    			return ResponseEntity.badRequest().build();
+    		}	
         }
         return ResponseEntity.notFound().build();
     }
