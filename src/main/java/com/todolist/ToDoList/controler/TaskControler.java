@@ -27,7 +27,7 @@ public class TaskControler {
 	
 	@GetMapping
 	public List<Task> getTasks() {
-		return taskRepository.findAll();
+		return taskRepository.findByDeletedFalse();
 	}
 	
 	@PostMapping
@@ -39,7 +39,7 @@ public class TaskControler {
 	@PutMapping("/{id}")
     public ResponseEntity<Task> updateTask(@PathVariable Long id, @RequestBody Task updatedTask) {
         Task existingTask = taskRepository.findById(id).orElse(null);
-        if (existingTask != null) {
+        if (existingTask != null && existingTask.isDeleted() == false) {
             existingTask.setDescription(updatedTask.getDescription());
             existingTask.setCompleted(updatedTask.isCompleted());
             Task updated = taskRepository.save(existingTask);
@@ -52,7 +52,24 @@ public class TaskControler {
     public ResponseEntity<Task> deleteTask(@PathVariable Long id) {
     	Task existingTask = taskRepository.findById(id).orElse(null);
     	if (existingTask != null) {
-    		taskRepository.deleteById(id);
+    		existingTask.setDeleted(true);
+    		taskRepository.save(existingTask);
+    		return ResponseEntity.ok(existingTask);
+    	}
+    	return ResponseEntity.notFound().build();
+    }
+    
+    @GetMapping("/bin")
+    public List<Task> getDeletedTasks() {
+        return taskRepository.findByDeletedTrue();
+    }
+    
+    @PutMapping("/recover/{id}")
+    public ResponseEntity<Task> recoverDeletedTasks(@PathVariable Long id) {
+    	Task existingTask = taskRepository.findById(id).orElse(null);
+    	if (existingTask != null) {
+    		existingTask.setDeleted(false);
+    		taskRepository.save(existingTask);
     		return ResponseEntity.ok(existingTask);
     	}
     	return ResponseEntity.notFound().build();
