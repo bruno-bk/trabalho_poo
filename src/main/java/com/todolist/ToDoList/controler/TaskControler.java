@@ -2,6 +2,9 @@ package com.todolist.ToDoList.controler;
 
 import java.util.List;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -26,8 +29,30 @@ public class TaskControler {
 	private TaskRepository taskRepository;
 	
 	@GetMapping
-	public List<Task> getTasks() {
-		return taskRepository.findByDeletedFalse();
+	public ResponseEntity<String> getTasks() {
+		List<Task> tasks = taskRepository.findByDeletedFalse();
+		JSONObject json = new JSONObject();
+		JSONArray array = new JSONArray();
+		for(Task task : tasks)
+		{
+			JSONObject item = new JSONObject();
+			try {
+				item.put("id", task.getId());
+				item.put("description", task.getDescription());
+				item.put("completed", task.isCompleted());
+				item.put("deleted", task.isDeleted());
+				item.put("creation_date", task.getCreation_date());
+			} catch (JSONException e) {
+				return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Error processing tasks: " + e.getMessage());
+			}
+			array.put(item);
+		}
+		try {
+			json.put("dados", array);
+		} catch (JSONException e) {
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Unexpected error: " + e.getMessage());
+		}
+		return ResponseEntity.ok(json.toString());
 	}
 	
 	@PostMapping
@@ -71,8 +96,30 @@ public class TaskControler {
     }
     
     @GetMapping("/bin")
-    public List<Task> getDeletedTasks() {
-        return taskRepository.findByDeletedTrue();
+    public ResponseEntity<String> getDeletedTasks() {
+        List<Task> tasks = taskRepository.findByDeletedTrue();
+		JSONObject json = new JSONObject();
+		JSONArray array = new JSONArray();
+		for(Task task : tasks)
+		{
+			JSONObject item = new JSONObject();
+			try {
+				item.put("id", task.getId());
+				item.put("description", task.getDescription());
+				item.put("completed", task.isCompleted());
+				item.put("deleted", task.isDeleted());
+				item.put("creation_date", task.getCreation_date());
+			} catch (JSONException e) {
+				return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Error processing tasks: " + e.getMessage());
+			}
+			array.put(item);
+		}
+		try {
+			json.put("dados", array);
+		} catch (JSONException e) {
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Unexpected error: " + e.getMessage());
+		}
+		return ResponseEntity.ok(json.toString());
     }
     
     @PutMapping("/recover/{id}")
