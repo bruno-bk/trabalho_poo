@@ -20,6 +20,7 @@ Esta é uma API desenvolvida em Java utilizando o framework Spring Boot para um 
   - [Excluir Tarefa](#excluir-tarefa)
   - [Obter Tarefas Excluídas](#obter-tarefas-excluídas)
   - [Recuperar Tarefa Excluída](#recuperar-tarefa-excluída)
+- [Utilizando Collection Postman](#utilizando-collection-postman)
 - [Notas](#notas)
 - [Dependências](#dependências)
 - [Contribuindo](#contribuindo)
@@ -150,6 +151,16 @@ curl -X GET http://localhost:8080/tasks/bin
 ```bash
 curl -X PUT http://localhost:8080/tasks/recover/1
 ```
+
+## Utilizando Collection Postman
+
+Este repositório inclui uma Collection no Postman para simplificar e automatizar o teste de API. Siga os passos abaixo para começar:
+
+**Instalação do Postman:** Certifique-se de ter o Postman instalado em seu sistema. Se ainda não tiver, faça o download e a instalação a partir do site oficial: Postman Download.
+
+**Importando a Collection:** Após a instalação do Postman, abra a aplicação e clique no botão "Import" localizado no canto superior esquerdo. clique em file e selecione o arquivo *Trabalho POO.postman_collection*.
+
+Pronto seu ambiente no Postman está configurado!
 
 ## Notas
 
