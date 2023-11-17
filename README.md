@@ -71,6 +71,7 @@ curl -X GET http://localhost:8080/tasks
 - **Resposta:**
   - Código de Status: `201 Created`
   - Corpo: Tarefa criada
+  - Código de Status: `400 bad Request` (Se a requisição não estive como esperada).
 - **Exemplo de Uso:**
 ```bash
 curl -X POST \
@@ -92,6 +93,7 @@ curl -X POST \
 - **Resposta:**
   - Código de Status: `200 OK`
   - Corpo: Tarefa atualizada
+  - Código de Status: `400 bad Request` (Se a requisição não estive como esperada).
   - Código de Status: `404 Not Found` (se a tarefa não existir)
 - **Exemplo de Uso:**
 ```bash
